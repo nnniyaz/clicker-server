@@ -1,5 +1,10 @@
 const Branch = require('../models/branchModel');
-const Click = require('../models/clickModel');
+
+const errorMessage = 'Что-то пошло не так';
+const branchNotFoundMessage = 'Филиал не найден';
+const branchAddedMessage = 'Филиал успешно добавлен';
+const branchDeletedMessage = 'Филиал успешно удален';
+const branchAlreadyExistsMessage = 'Такой филиал уже существует';
 
 class BranchController {
     async addBranch(req, res, next) {
@@ -11,7 +16,7 @@ class BranchController {
             if (candidate) {
                 return res.json({
                     success: false,
-                    message: 'Такой филиал уже существует'
+                    message: branchAlreadyExistsMessage,
                 });
             }
 
@@ -22,12 +27,12 @@ class BranchController {
 
             return res.json({
                 success: true,
-                message: 'Филиал успешно добавлен',
+                message: branchAddedMessage,
             });
         } catch (e) {
             return res.json({
                 success: false,
-                message: e.message || 'Что-то пошло не так',
+                message: e.message || errorMessage,
             });
         }
     }
@@ -41,7 +46,7 @@ class BranchController {
             if (!branch) {
                 res.json({
                     success: false,
-                    message: 'Филиал не найден',
+                    message: branchNotFoundMessage,
                 });
             }
 
@@ -49,12 +54,12 @@ class BranchController {
 
             return res.json({
                 success: true,
-                message: 'Филиал успешно удален',
+                message: branchDeletedMessage,
             });
         } catch (e) {
             return res.json({
                 success: false,
-                message: e.message || 'Что-то пошло не так',
+                message: e.message || errorMessage,
             });
         }
     }
@@ -68,7 +73,7 @@ class BranchController {
             if (!branch) {
                 res.json({
                     success: false,
-                    message: 'Филиал не найден',
+                    message: branchNotFoundMessage,
                 });
             }
 
@@ -79,7 +84,7 @@ class BranchController {
         } catch (e) {
             return res.json({
                 success: false,
-                message: e.message || 'Что-то пошло не так',
+                message: e.message || errorMessage,
             });
         }
     }
@@ -87,19 +92,6 @@ class BranchController {
     async getAllBranches(req, res, next) {
         try {
             const branches = await Branch.find();
-
-            // branches.forEach(async (branch) => {
-            //     const allClicks = await Click.find({branch: branch.name});
-            //     const currentDay = new Date().getDate();
-            //
-            //     branch.todaysClicksNumber = allClicks.filter((click) => {
-            //
-            //     })
-            //     branch.lastWeekClicksNumber
-            //     branch.lastMonthClicksNumber
-            //     branch.last3MonthsClicksNumber
-            // });
-
             return res.json({
                 success: true,
                 data: branches,
@@ -107,7 +99,7 @@ class BranchController {
         } catch (e) {
             return res.json({
                 success: false,
-                message: e.message || 'Что-то пошло не так',
+                message: e.message || errorMessage,
             });
         }
     }

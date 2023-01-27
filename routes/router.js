@@ -15,5 +15,6 @@ router.post('/cmd/click-add', ClickController.addClick);
 router.post('/cmd/click-delete', ClickController.deleteClick);
 
 router.get('/q/click-get-all', ClickController.getAllClicks);
+router.get('/q/click-stats', ClickController.getClicksStats);
 
 module.exports = router;
