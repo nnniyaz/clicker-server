@@ -5,6 +5,7 @@ const BranchController = require('../controllers/branchController');
 
 // ------------------------- BRANCHES -------------------------
 router.post('/cmd/branch-add', BranchController.addBranch);
+router.post('/cmd/branch-update', BranchController.updateBranch);
 router.post('/cmd/branch-delete', BranchController.deleteBranch);
 
 router.post('/q/branch-get-one', BranchController.getBranchById);
