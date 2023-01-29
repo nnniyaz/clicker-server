@@ -122,6 +122,8 @@ class ClickController {
 
     async getClicksStats(req, res, next) {
         try {
+            const {currentTime} = req.body;
+
             const clicks = await Click.find();
             const branches = await Branch.find();
 
@@ -172,8 +174,7 @@ class ClickController {
                 const branch = data.branches[click.branch];
 
                 // current local time
-                const time = new Date().getTime();
-                const localDate = new Date(time);
+                const localDate = new Date(currentTime)
 
                 const clickDate = new Date(click.createdAt);
 

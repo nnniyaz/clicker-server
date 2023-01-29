@@ -14,8 +14,8 @@ router.get('/q/branch-get-all', BranchController.getAllBranches);
 // -------------------------- CLICKS --------------------------
 router.post('/cmd/click-add', ClickController.addClick);
 router.post('/cmd/click-delete', ClickController.deleteClick);
+router.post('/q/click-stats', ClickController.getClicksStats);
 
 router.get('/q/click-get-all', ClickController.getAllClicks);
-router.get('/q/click-stats', ClickController.getClicksStats);
 
 module.exports = router;
