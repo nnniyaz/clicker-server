@@ -133,6 +133,24 @@ class ClickController {
                     clicksLast3Month: {},
                     clicksLastYear: {}
                 }
+
+                Array.from({length: 365}, (v, k) => {
+                    if (k < 7) {
+                        data.branches[branch.name].clicksLastWeek[k] = 0;
+                    }
+                    if (k < 24) {
+                        data.branches[branch.name].clicksToday[k] = 0;
+                    }
+                    if (k < 30) {
+                        data.branches[branch.name].clicksLastMonth[k] = 0;
+                    }
+                    if (k < 90) {
+                        data.branches[branch.name].clicksLast3Month[k] = 0;
+                    }
+                    if (k < 365) {
+                        data.branches[branch.name].clicksLastYear[k] = 0;
+                    }
+                });
             });
 
             for (let i = 0; i < clicks.length; i++) {
@@ -149,39 +167,19 @@ class ClickController {
                 const diffDays = Math.round(diff / (1000 * 3600 * 24));
 
                 if (diffDays === 0) {
-                    if (branch?.clicksToday[clickDate.getHours()] !== null && branch?.clicksToday[clickDate.getHours()] !== undefined) {
-                        branch.clicksToday[clickDate.getHours()] += 1;
-                    } else {
-                        branch.clicksToday[clickDate.getHours()] = 1;
-                    }
+                    branch.clicksToday[clickDate.getHours()] += 1;
                 }
                 if (diffDays < 7) {
-                    if (branch?.clicksLastWeek[diffDays] !== null && branch?.clicksLastWeek[diffDays] !== undefined) {
-                        branch.clicksLastWeek[diffDays] += 1;
-                    } else {
-                        branch.clicksLastWeek[diffDays] = 1;
-                    }
+                    branch.clicksLastWeek[diffDays] += 1;
                 }
                 if (diffDays < 30) {
-                    if (branch?.clicksLastMonth[diffDays] !== null && branch?.clicksLastMonth[diffDays] !== undefined) {
-                        branch.clicksLastMonth[diffDays] += 1;
-                    } else {
-                        branch.clicksLastMonth[diffDays] = 1;
-                    }
+                    branch.clicksLastMonth[diffDays] += 1;
                 }
                 if (diffDays < 90) {
-                    if (branch?.clicksLast3Month[diffDays] !== null && branch?.clicksLast3Month[diffDays] !== undefined) {
-                        branch.clicksLast3Month[diffDays] += 1;
-                    } else {
-                        branch.clicksLast3Month[diffDays] = 1;
-                    }
+                    branch.clicksLast3Month[diffDays] += 1;
                 }
                 if (diffDays < 365) {
-                    if (branch?.clicksLastYear[diffDays] !== null && branch?.clicksLastYear[diffDays] !== undefined) {
-                        branch.clicksLastYear[diffDays] += 1;
-                    } else {
-                        branch.clicksLastYear[diffDays] = 1;
-                    }
+                    branch.clicksLastYear[diffDays] += 1;
                 }
             }
 
