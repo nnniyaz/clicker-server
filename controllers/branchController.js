@@ -92,7 +92,7 @@ class BranchController {
 
             await branch.remove();
 
-            const clicks = await Click.find({branch: branchName});
+            const clicks = await Click.find({branch: branchName}) || [];
 
             for (let i = 0; i < clicks.length; i++) {
                 await clicks[i].remove();
@@ -123,9 +123,30 @@ class BranchController {
                 });
             }
 
+            const clicks = await Click.find({branch: branch.name}) || [];
+
+            let todayClicksNumber = 0;
+
+            for (let i = 0; i < clicks.length; i++) {
+                const click = clicks[i];
+
+                // current local time
+                const time = new Date().getTime();
+                const localDate = new Date(time).getDate();
+
+                const clickDate = new Date(click.createdAt).getDate();
+
+                if (localDate === clickDate) {
+                    todayClicksNumber++;
+                }
+            }
+
             return res.json({
                 success: true,
-                data: branch,
+                data: {
+                    ...branch,
+                    clicksNumber: todayClicksNumber,
+                },
             })
         } catch (e) {
             return res.json({
@@ -137,10 +158,41 @@ class BranchController {
 
     async getAllBranches(req, res, next) {
         try {
-            const branches = await Branch.find();
+            const branches = await Branch.find() || [];
+
+            const branchesWithTodayClicksNumber = [];
+
+            for (let i = 0; i < branches.length; i++) {
+                const clicks = await Click.find({branch: branches[i].name}) || [];
+
+                let todayClicksNumber = 0;
+
+                for (let i = 0; i < clicks.length; i++) {
+                    const click = clicks[i];
+
+                    // current local time
+                    const time = new Date().getTime();
+                    const localDate = new Date(time).getDate();
+
+                    const clickDate = new Date(click.createdAt).getDate();
+
+                    if (localDate === clickDate) {
+                        todayClicksNumber++;
+                    }
+                }
+
+                branchesWithTodayClicksNumber.push({
+                    _id: branches[i]._id,
+                    name: branches[i].name,
+                    createdAt: branches[i].createdAt,
+                    clicksNumber: branches[i].clicksNumber,
+                    todayClicksNumber: todayClicksNumber,
+                })
+            }
+
             return res.json({
                 success: true,
-                data: branches,
+                data: branchesWithTodayClicksNumber,
             })
         } catch (e) {
             return res.json({
