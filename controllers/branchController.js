@@ -7,11 +7,29 @@ const branchAddedMessage = 'Филиал успешно добавлен';
 const branchUpdatedMessage = 'Филиал успешно обновлен';
 const branchDeletedMessage = 'Филиал успешно удален';
 const branchAlreadyExistsMessage = 'Такой филиал уже существует';
+const branchNameIsNotSpecifiedMessage = 'Не указано название филиала';
+const branchCreatedAtIsNotSpecifiedMessage = 'Не указано время создания филиала';
 
 class BranchController {
     async addBranch(req, res, next) {
         try {
-            const {name} = req.body;
+            const {name, createdAt} = req.body;
+
+            if (!name || !createdAt) {
+                if (!name) {
+                    return res.json({
+                        success: false,
+                        message: branchNameIsNotSpecifiedMessage,
+                    });
+                }
+
+                if (!createdAt) {
+                    return res.json({
+                        success: false,
+                        message: branchCreatedAtIsNotSpecifiedMessage,
+                    });
+                }
+            }
 
             const candidate = await Branch.findOne({name: name});
 
@@ -22,10 +40,7 @@ class BranchController {
                 });
             }
 
-            const time = new Date().getTime();
-            const localDate = new Date(time);
-
-            const branch = await Branch.create({name: name, createdAt: localDate.toString()});
+            const branch = await Branch.create({name: name, createdAt: createdAt});
 
             return res.json({
                 success: true,

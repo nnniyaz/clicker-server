@@ -6,11 +6,29 @@ const branchNotFoundMessage = 'Филиал не найден';
 const clicksNumberIsZeroMessage = 'Количество кликов равно 0';
 const clickAddedMessage = 'Клик успешно добавлен';
 const clickDeletedMessage = 'Клик успешно удален';
+const branchNameIsNotSpecifiedMessage = 'Не указано название филиала';
+const clickCreatedAtIsNotSpecifiedMessage = 'Не указано время клика';
 
 class ClickController {
     async addClick(req, res, next) {
         try {
-            const {branchName} = req.body;
+            const {branchName, createdAt} = req.body;
+
+            if (!branchName || !createdAt) {
+                if (!branchName) {
+                    return res.json({
+                        success: false,
+                        message: branchNameIsNotSpecifiedMessage,
+                    });
+                }
+
+                if (!createdAt) {
+                    return res.json({
+                        success: false,
+                        message: clickCreatedAtIsNotSpecifiedMessage,
+                    });
+                }
+            }
 
             const branchPoint = await Branch.findOne({name: branchName});
 
@@ -21,11 +39,7 @@ class ClickController {
                 });
             }
 
-            // current local time
-            const time = new Date().getTime();
-            const localDate = new Date(time);
-
-            const click = await Click.create({branch: branchName, createdAt: localDate.toString()});
+            const click = await Click.create({branch: branchName, createdAt: createdAt});
             branchPoint.clicksNumber += 1;
             await branchPoint.save();
 
