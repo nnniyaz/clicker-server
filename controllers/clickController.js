@@ -175,10 +175,12 @@ class ClickController {
 
                 // current local time
                 const localDate = new Date(currentTime)
+                const properLocalDate = new Date(localDate.getTime() + (localDate.getTimezoneOffset() * 60000 * -1));
 
                 const clickDate = new Date(click.createdAt);
 
-                const diff = localDate.getTime() - clickDate.getTime();
+                const diff = properLocalDate.getTime() - clickDate.getTime();
+
                 const diffDays = Math.round(diff / (1000 * 3600 * 24));
 
                 if (diffDays === 0) {
