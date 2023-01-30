@@ -172,13 +172,19 @@ class ClickController {
                 const click = clicks[i];
                 const branch = data.branches[click.branch];
 
+                const d = new Date();
+                const localTime = d.getTime();
+                const localOffset = d.getTimezoneOffset() * 60000;
 
-                // current local time
-                const date = new Date(moment().tz('Asia/Almaty').format());
+                const utc = localTime + localOffset;
+                const offset = 4; // UTC of Dubai is +04.00
+                const kazakhstan = utc + (3600000 * offset);
+
+                const kazakhstanTimeNow = new Date(kazakhstan)
 
                 const clickDate = new Date(click.createdAt);
 
-                const diff = date.getTime() - clickDate.getTime();
+                const diff = kazakhstanTimeNow.getTime() - clickDate.getTime();
 
                 const diffDays = Math.round(diff / (1000 * 3600 * 24));
 
