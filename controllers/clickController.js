@@ -1,5 +1,6 @@
 const Branch = require('../models/branchModel');
 const Click = require('../models/clickModel');
+const moment = require('moment-timezone');
 
 const errorMessage = 'Что-то пошло не так';
 const branchNotFoundMessage = 'Филиал не найден';
@@ -171,17 +172,13 @@ class ClickController {
                 const click = clicks[i];
                 const branch = data.branches[click.branch];
 
+
                 // current local time
-                const date = new Date()
-                const utcTime = date.getTime() + (date.getTimezoneOffset() * 60000);
-
-                const timeOffset = 6;
-
-                const KazakhstanTime = new Date(utcTime + (3600000 * timeOffset));
+                const date = new Date(moment().tz('Asia/Almaty').format());
 
                 const clickDate = new Date(click.createdAt);
 
-                const diff = KazakhstanTime.getTime() - clickDate.getTime();
+                const diff = date.getTime() - clickDate.getTime();
 
                 const diffDays = Math.round(diff / (1000 * 3600 * 24));
 
