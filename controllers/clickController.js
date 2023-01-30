@@ -122,8 +122,6 @@ class ClickController {
 
     async getClicksStats(req, res, next) {
         try {
-            const {currentTime} = req.body;
-
             const clicks = await Click.find();
             const branches = await Branch.find();
 
@@ -174,12 +172,16 @@ class ClickController {
                 const branch = data.branches[click.branch];
 
                 // current local time
-                const localDate = new Date(currentTime)
-                const properLocalDate = new Date(localDate.getTime() + (localDate.getTimezoneOffset() * 60000 * -1));
+                const date = new Date()
+                const utcTime = date.getTime() + (date.getTimezoneOffset() * 60000);
+
+                const timeOffset = 6;
+
+                const KazakhstanTime = new Date(utcTime + (3600000 * timeOffset));
 
                 const clickDate = new Date(click.createdAt);
 
-                const diff = properLocalDate.getTime() - clickDate.getTime();
+                const diff = KazakhstanTime.getTime() - clickDate.getTime();
 
                 const diffDays = Math.round(diff / (1000 * 3600 * 24));
 
