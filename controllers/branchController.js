@@ -191,13 +191,19 @@ class BranchController {
                 for (let i = 0; i < clicks.length; i++) {
                     const click = clicks[i];
 
-                    // current local time
-                    const time = new Date().getTime();
-                    const localDate = new Date(time).getDate();
+                    const d = new Date();
+                    const localTime = d.getTime();
+                    const localOffset = d.getTimezoneOffset() * 60000;
 
-                    const clickDate = new Date(click.createdAt).getDate();
+                    const utc = localTime + localOffset;
+                    const offset = 6;
+                    const kazakhstan = utc + (3600000 * offset);
 
-                    if (localDate === clickDate) {
+                    const kazakhstanTimeNow = new Date(kazakhstan)
+
+                    const clickDate = new Date(new Date(click.createdAt).getTime() + (3600000 * offset));
+
+                    if (kazakhstanTimeNow.getDate() === clickDate.getDate()) {
                         todayClicksNumber++;
                     }
                 }
