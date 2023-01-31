@@ -177,12 +177,12 @@ class ClickController {
                 const localOffset = d.getTimezoneOffset() * 60000;
 
                 const utc = localTime + localOffset;
-                const offset = 4; // UTC of Dubai is +04.00
+                const offset = 6;
                 const kazakhstan = utc + (3600000 * offset);
 
                 const kazakhstanTimeNow = new Date(kazakhstan)
 
-                const clickDate = new Date(click.createdAt);
+                const clickDate = new Date(new Date(click.createdAt).getTime() + (3600000 * offset));
 
                 const diff = kazakhstanTimeNow.getTime() - clickDate.getTime();
 
